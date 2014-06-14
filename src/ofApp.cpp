@@ -28,11 +28,11 @@ void ofApp::setup(){
 	box2d.registerGrabbing();
 
 	// lets add a contour to start
-	for (int i=0; i<nPts; i+=2) {
+	/*for (int i=0; i<nPts; i+=2) {
 		float x = pts[i];
 		float y = pts[i+1];
 		edgeLine.addVertex(x, y);
-	}
+	}*/
 
 	// make the shape
 	edgeLine.setPhysics(0.0, 0.5, 0.5);
@@ -42,15 +42,16 @@ void ofApp::setup(){
 	{
 		/* code */
 		parse::Polygon p = polys[i];
-		ofxBox2dEdge edge;
+		ofPtr<ofxBox2dEdge> edge(new ofxBox2dEdge);
 		ofLog() << "numPoints:" << p.size();
 		for (int i = 0; i < p.size(); ++i)
 		{
+			edge->addVertex(p[i].x,p[i].y);
 			ofLog() << "Point: " << i << " (" << p[i].x << "," << p[i].y;
 		}
-		edge.addVertexes(p);
-		edge.setPhysics(0.0, 0.5, 0.5);
-		edge.create(box2d.getWorld());
+		//edge.addVertexes(p);
+		edge->setPhysics(0.0, 0.5, 0.5);
+		edge->create(box2d.getWorld());
 		edgesFromEdge.push_back(edge);
 	}
 	ofLog() << "edges:" << edgesFromEdge.size();
@@ -84,17 +85,19 @@ void ofApp::draw(){
 	//Edges
 	ofNoFill();
 	ofSetHexColor(0x444342);
+	//ofLog() << "edges:" << edgesFromEdge.size();
+
 	for (int i = 0; i < edgesFromEdge.size(); ++i)
 	{
-		edgesFromEdge[i].updateShape();
-		edgesFromEdge[i].draw();
+		edgesFromEdge[i]->updateShape();
+		edgesFromEdge[i]->draw();
 	}
 
 	
 
 	//edges
-	edgeLine.updateShape();
-	edgeLine.draw();
+	//edgeLine.updateShape();
+	//edgeLine.draw();
 
 }
 
