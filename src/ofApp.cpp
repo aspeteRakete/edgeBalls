@@ -15,7 +15,7 @@ void ofApp::setup(){
 	std::ifstream stream("data/examplelvl.json");
 	std::string json((std::istreambuf_iterator<char>(stream)),
 					 std::istreambuf_iterator<char>());
-	parse::parsePolygons(json, ofGetWidth(), ofGetHeight());
+	vector<parse::Polygon> polys = parse::parsePolygons(json, ofGetWidth(), ofGetHeight());
 	
 	ofSetVerticalSync(true);
 	ofBackgroundHex(0xfdefc2);
@@ -37,6 +37,21 @@ void ofApp::setup(){
 	// make the shape
 	edgeLine.setPhysics(0.0, 0.5, 0.5);
 	edgeLine.create(box2d.getWorld());
+
+	for (int i=0; i < polys.size(); ++i)
+	{
+		/* code */
+		parse::Polygon p = polys[i];
+		ofxBox2dEdge edge;
+		ofLog() << "numPoints:" << p.size();
+		for (int j = 0; j < p.size(); ++j)
+		{
+			edge.addVertex(p[j]);
+		}
+		edge.setPhysics(0.0, 0.5, 0.5);
+		edge.create(box2d.getWorld());
+		edgesFromEdge.push_back(edge);
+	}
 
 }
 
@@ -64,9 +79,16 @@ void ofApp::draw(){
 		ofSetHexColor(0xe63b8b);
 		boxes[i].get()->draw();
 	}
-
+	//Edges
 	ofNoFill();
 	ofSetHexColor(0x444342);
+	for (int i = 0; i < edgesFromEdge.size(); ++i)
+	{
+		edgesFromEdge[i].updateShape();
+		edgesFromEdge[i].draw();
+	}
+
+	
 
 	//edges
 	edgeLine.updateShape();
