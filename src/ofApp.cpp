@@ -44,14 +44,16 @@ void ofApp::setup(){
 		parse::Polygon p = polys[i];
 		ofxBox2dEdge edge;
 		ofLog() << "numPoints:" << p.size();
-		for (int j = 0; j < p.size(); ++j)
+		for (int i = 0; i < p.size(); ++i)
 		{
-			edge.addVertex(p[j]);
+			ofLog() << "Point: " << i << " (" << p[i].x << "," << p[i].y;
 		}
+		edge.addVertexes(p);
 		edge.setPhysics(0.0, 0.5, 0.5);
 		edge.create(box2d.getWorld());
 		edgesFromEdge.push_back(edge);
 	}
+	ofLog() << "edges:" << edgesFromEdge.size();
 
 }
 

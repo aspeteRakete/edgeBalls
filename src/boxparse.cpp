@@ -23,7 +23,7 @@ std::vector<Polygon> parsePolygons(const std::string &json, int screenw, int scr
 		for (int i = 0; i < points.size(); ++i) {
 			double x = points[i]["x"].asDouble();
 			double y = points[i]["y"].asDouble();
-			poly.push_back(ofPoint(x * screenw, y * screenh));
+			poly.push_back(ofVec2f(x * screenw, y * screenh));
 		}
 		result.push_back(poly);
 	}
