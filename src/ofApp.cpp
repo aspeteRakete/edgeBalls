@@ -18,7 +18,7 @@ void ofApp::setup(){
 	vector<parse::Polygon> polys = parse::parsePolygons(json, ofGetWidth(), ofGetHeight());
 	
 	ofSetVerticalSync(true);
-	ofBackgroundHex(0xfdefc2);
+	ofBackgroundHex(0x0);
 	ofSetLogLevel(OF_LOG_NOTICE);
 
 	box2d.init();
@@ -117,6 +117,12 @@ void ofApp::keyPressed(int key){
 		boxes.push_back(ofPtr<ofxBox2dRect>(new ofxBox2dRect));
 		boxes.back().get()->setPhysics(3.0, 0.53, 0.1);
 		boxes.back().get()->setup(box2d.getWorld(), mouseX, mouseY, w, h);
+	}
+
+	if (key == 'f')
+	{
+		//fullscreen
+		ofToggleFullscreen();
 	}
 
 }

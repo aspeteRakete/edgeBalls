@@ -9,7 +9,8 @@ std::vector<Polygon> parsePolygons(const std::string &json, int screenw, int scr
 {
 	std::vector<Polygon> result;
 	
-	ofxJSONElement doc(json);
+	ofxJSONElement doc;
+	doc.openRemote(edgeUrl);
 
 	Json::Value &objs = doc["objects"];
 	Json::Value::Members objids = objs.getMemberNames();
