@@ -311,24 +311,6 @@
       "y": 0,
       "id": 20
     },
-    "25": {
-      "usesTexture": false,
-      "color": {
-        "b": 0,
-        "g": 0,
-        "r": 255
-      },
-      "maskEnabled": false,
-      "x": 0,
-      "type": "polygon",
-      "scale": 1,
-      "angle": 0,
-      "points": [],
-      "zorder": 22,
-      "visible": false,
-      "y": 0,
-      "id": 25
-    },
     "3": {
       "usesTexture": false,
       "color": {
