@@ -6,18 +6,15 @@
 #include <string>
 #include <streambuf>
 
-
-static int pts[] = {257,219,257,258,259,274,263,325,266,345,266,352,269,369,276,387,286,415,291,425,302,451,308,462,316,472,321,480,328,488,333,495,339,501,345,505,350,507,365,515,370,519,377,522,382,525,388,527,405,534,426,538,439,539,452,539,468,540,485,540,496,541,607,541,618,539,625,537,641,530,666,513,682,500,710,476,723,463,727,457,729,453,732,450,734,447,738,440,746,423,756,404,772,363,779,343,781,339,784,327,789,301,792,278,794,267,794,257,795,250,795,232,796,222,796,197,797,195,797,188,796,188};
-static int nPts  = 61*2;
-
 //--------------------------------------------------------------
 void ofApp::setup(){
-	std::ifstream stream("data/examplelvl.json");
+	/*std::ifstream stream("data/examplelvl.json");
 	std::string json((std::istreambuf_iterator<char>(stream)),
 					 std::istreambuf_iterator<char>());
-	vector<parse::Polygon> polys = parse::parsePolygons(json, ofGetWidth(), ofGetHeight());
+	//vector<parse::Polygon> polys = parse::parsePolygons(json, ofGetWidth(), ofGetHeight());*/
 	
 	ofSetVerticalSync(true);
+	ofEnableSmoothing();
 	ofBackgroundHex(0x0);
 	ofSetLogLevel(OF_LOG_NOTICE);
 
@@ -27,17 +24,8 @@ void ofApp::setup(){
 	box2d.setFPS(30.0);
 	box2d.registerGrabbing();
 
-	// lets add a contour to start
-	/*for (int i=0; i<nPts; i+=2) {
-		float x = pts[i];
-		float y = pts[i+1];
-		edgeLine.addVertex(x, y);
-	}*/
 
-	// make the shape
-	edgeLine.setPhysics(0.0, 0.5, 0.5);
-	edgeLine.create(box2d.getWorld());
-
+	vector<Polygon> polys = edgeIntrfc.parseFromFile(ofGetWidth(), ofGetHeight());
 	for (int i=0; i < polys.size(); ++i)
 	{
 		/* code */
@@ -56,6 +44,12 @@ void ofApp::setup(){
 	}
 	ofLog() << "edges:" << edgesFromEdge.size();
 
+	 post.init(ofGetWidth(), ofGetHeight());
+	 post.createPass<FxaaPass>()->setEnabled(true);
+	 post.createPass<BloomPass>()->setEnabled(false);
+	 post.createPass<GodRaysPass>()->setEnabled(true);
+	 post.createPass<PixelatePass>()->setEnabled(false);
+
 }
 
 //--------------------------------------------------------------
@@ -70,6 +64,7 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	//post.begin();
 	//Circles
 	for(int i=0; i<circles.size(); i++) {
 		ofFill();
@@ -82,6 +77,7 @@ void ofApp::draw(){
 		ofSetHexColor(0xe63b8b);
 		boxes[i].get()->draw();
 	}
+	//post.end();
 	//Edges
 	ofNoFill();
 	ofSetHexColor(0x444342);
@@ -105,9 +101,9 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
 	if(key == 'c') {
 		float r = ofRandom(4, 20);		// a random radius 4px - 20px
-		circles.push_back(ofPtr<ofxBox2dCircle>(new ofxBox2dCircle));
+		circles.push_back(ofPtr<myBox2dCircle>(new myBox2dCircle));
 		circles.back().get()->setPhysics(3.0, 0.53, 0.1);
-		circles.back().get()->setup(box2d.getWorld(), mouseX, mouseY, r);
+		circles.back().get()->setup(box2d.getWorld(), mouseX, mouseY, r,ofColor(ofRandom(0,10),ofRandom(120,190),ofRandom(60,90)));
 		
 	}
 

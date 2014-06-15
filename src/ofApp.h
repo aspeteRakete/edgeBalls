@@ -2,6 +2,9 @@
 
 #include "ofMain.h"
 #include "ofxBox2d.h"
+#include "edgeInterface.h"
+#include "myBox2DCircle.h"
+#include "ofxPostProcessing.h"
 
 class ofApp : public ofBaseApp{
 
@@ -22,9 +25,12 @@ class ofApp : public ofBaseApp{
 
 		ofxBox2d                                box2d;			  //	the box2d world
 		ofPolyline                              drawing;		  //	we draw with this first
-		ofxBox2dEdge                            edgeLine;		  //	the box2d edge/line shape (min 2 points)
+		//ofxBox2dEdge                            edgeLine;		  //	the box2d edge/line shape (min 2 points)
 		vector <ofPtr<ofxBox2dEdge> >			edgesFromEdge;		// edges from the edge
-		vector      <ofPtr<ofxBox2dCircle> >    circles;          //    default box2d circles
+		vector      <ofPtr<myBox2dCircle> >    circles;          //    default box2d circles
 		vector      <ofPtr<ofxBox2dRect> >      boxes;            //    defalut box2d rects
-		
+
+		edgeInterface edgeIntrfc;
+
+		ofxPostProcessing post;
 };
