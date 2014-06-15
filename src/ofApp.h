@@ -5,8 +5,9 @@
 #include "edgeInterface.h"
 #include "myBox2DCircle.h"
 #include "ofxPostProcessing.h"
+#include "ofxMidi.h"
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp, public ofxMidiListener{
 
 	public:
 		void setup();
@@ -22,6 +23,10 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+		void newMidiMessage(ofxMidiMessage& eventArgs);
+
+		void processEdges();
+		vector<Polygon> polys;
 
 		ofxBox2d                                box2d;			  //	the box2d world
 		ofPolyline                              drawing;		  //	we draw with this first
@@ -33,4 +38,6 @@ class ofApp : public ofBaseApp{
 		edgeInterface edgeIntrfc;
 
 		ofxPostProcessing post;
+
+		ofxMidiIn lp;
 };

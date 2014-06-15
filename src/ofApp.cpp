@@ -1,17 +1,8 @@
 #include "ofApp.h"
 
 
-#include "boxparse.h"
-#include <fstream>
-#include <string>
-#include <streambuf>
-
 //--------------------------------------------------------------
 void ofApp::setup(){
-	/*std::ifstream stream("data/examplelvl.json");
-	std::string json((std::istreambuf_iterator<char>(stream)),
-					 std::istreambuf_iterator<char>());
-	//vector<parse::Polygon> polys = parse::parsePolygons(json, ofGetWidth(), ofGetHeight());*/
 	
 	ofSetVerticalSync(true);
 	ofEnableSmoothing();
@@ -25,11 +16,11 @@ void ofApp::setup(){
 	box2d.registerGrabbing();
 
 
-	vector<Polygon> polys = edgeIntrfc.parseFromFile(ofGetWidth(), ofGetHeight());
-	for (int i=0; i < polys.size(); ++i)
+	polys = edgeIntrfc.parseFromFile(ofGetWidth(), ofGetHeight());
+	processEdges();
+	/*for (int i=0; i < polys.size(); ++i)
 	{
-		/* code */
-		parse::Polygon p = polys[i];
+		Polygon p = polys[i];
 		ofPtr<ofxBox2dEdge> edge(new ofxBox2dEdge);
 		ofLog() << "numPoints:" << p.size();
 		for (int i = 0; i < p.size(); ++i)
@@ -42,13 +33,20 @@ void ofApp::setup(){
 		edge->create(box2d.getWorld());
 		edgesFromEdge.push_back(edge);
 	}
-	ofLog() << "edges:" << edgesFromEdge.size();
+	ofLog() << "edges:" << edgesFromEdge.size();*/
 
 	 post.init(ofGetWidth(), ofGetHeight());
 	 post.createPass<FxaaPass>()->setEnabled(true);
 	 post.createPass<BloomPass>()->setEnabled(false);
 	 post.createPass<GodRaysPass>()->setEnabled(true);
 	 post.createPass<PixelatePass>()->setEnabled(false);
+
+	//midi
+	/*lp.listPorts();
+	//lp.openPort(1);
+	lp.openPort("Launchpad 24:0");
+	lp.addListener(this);
+	lp.setVerbose(true);*/
 
 }
 
@@ -89,12 +87,6 @@ void ofApp::draw(){
 		edgesFromEdge[i]->draw();
 	}
 
-	
-
-	//edges
-	//edgeLine.updateShape();
-	//edgeLine.draw();
-
 }
 
 //--------------------------------------------------------------
@@ -103,7 +95,7 @@ void ofApp::keyPressed(int key){
 		float r = ofRandom(4, 20);		// a random radius 4px - 20px
 		circles.push_back(ofPtr<myBox2dCircle>(new myBox2dCircle));
 		circles.back().get()->setPhysics(3.0, 0.53, 0.1);
-		circles.back().get()->setup(box2d.getWorld(), mouseX, mouseY, r,ofColor(ofRandom(0,10),ofRandom(120,190),ofRandom(60,90)));
+		circles.back().get()->setup(box2d.getWorld(), mouseX, mouseY, r,ofColor(ofRandom(190,210),ofRandom(50,70),ofRandom(0,12)));
 		
 	}
 
@@ -121,6 +113,44 @@ void ofApp::keyPressed(int key){
 		ofToggleFullscreen();
 	}
 
+	if(key == 'u')
+	{
+		//update edge from edge
+		polys = edgeIntrfc.parseFromEdge(ofGetWidth(), ofGetHeight());
+		edgesFromEdge.clear();
+		processEdges();
+
+	}
+
+}
+void ofApp::processEdges()
+{
+	for (int i=0; i < polys.size(); ++i)
+		{
+			Polygon p = polys[i];
+			ofPtr<ofxBox2dEdge> edge(new ofxBox2dEdge);
+			ofLog() << "numPoints:" << p.size();
+			for (int i = 0; i < p.size(); ++i)
+			{
+				edge->addVertex(p[i].x,p[i].y);
+				ofLog() << "Point: " << i << " (" << p[i].x << "," << p[i].y;
+			}
+			//edge.addVertexes(p);
+			edge->setPhysics(0.0, 0.5, 0.5);
+			edge->create(box2d.getWorld());
+			edgesFromEdge.push_back(edge);
+		}
+		ofLog() << "edges:" << edgesFromEdge.size();
+}
+
+void ofApp::newMidiMessage(ofxMidiMessage& eventArgs){
+	ofLog() << "Midi Message Received. velocity:" <<eventArgs.velocity << " - pitch: " << eventArgs.pitch; 
+	float r = ofRandom(4,20);		// a random radius 4px - 20px
+	circles.push_back(ofPtr<myBox2dCircle>(new myBox2dCircle));
+	circles.back().get()->setPhysics(3.0, 0.53, 0.1);
+	int x = (eventArgs.pitch) * (ofGetWidth() / 120);
+	int y = 10;
+	circles.back().get()->setup(box2d.getWorld(), x, y, r,ofColor(ofRandom(190,210),ofRandom(50,70),ofRandom(0,12)));
 }
 
 //--------------------------------------------------------------
