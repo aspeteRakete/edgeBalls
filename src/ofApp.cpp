@@ -135,6 +135,9 @@ void ofApp::processEdges()
 				edge->addVertex(p[i].x,p[i].y);
 				ofLog() << "Point: " << i << " (" << p[i].x << "," << p[i].y;
 			}
+			//close Poly
+			edge->addVertex(p[0].x,p[0].y);
+
 			//edge.addVertexes(p);
 			edge->setPhysics(0.0, 0.5, 0.5);
 			edge->create(box2d.getWorld());
