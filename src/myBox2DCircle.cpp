@@ -31,10 +31,6 @@ void myBox2dCircle::draw()
 	ofRotate(getRotation(), 0, 0, 1);
 	ofCircle(0, 0, getRadius());
 
-    ofPushStyle();
-    ofEnableAlphaBlending();
-    ofPopStyle();
-
 	ofPopMatrix();
 }
 

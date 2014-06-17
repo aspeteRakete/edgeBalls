@@ -4,6 +4,7 @@
 #include "ofxBox2d.h"
 #include "edgeInterface.h"
 #include "myBox2DCircle.h"
+#include "myBox2dRect.h"
 #include "ofxPostProcessing.h"
 #include "ofxMidi.h"
 
@@ -33,7 +34,9 @@ class ofApp : public ofBaseApp, public ofxMidiListener{
 		//ofxBox2dEdge                            edgeLine;		  //	the box2d edge/line shape (min 2 points)
 		vector <ofPtr<ofxBox2dEdge> >			edgesFromEdge;		// edges from the edge
 		vector      <ofPtr<myBox2dCircle> >    circles;          //    default box2d circles
-		vector      <ofPtr<ofxBox2dRect> >      boxes;            //    defalut box2d rects
+		vector      <ofPtr<myBox2dRect> >      boxes;            //    defalut box2d rects
+
+		ofImage textureImage;
 
 		edgeInterface edgeIntrfc;
 

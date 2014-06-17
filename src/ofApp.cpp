@@ -41,6 +41,12 @@ void ofApp::setup(){
 	 post.createPass<GodRaysPass>()->setEnabled(true);
 	 post.createPass<PixelatePass>()->setEnabled(false);
 
+	 ofDisableArbTex();
+	 textureImage.loadImage("edge.png");
+	 //textureImage.getTextureReference().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
+     //textureImage.getTextureReference().setTextureWrap(GL_REPEAT, GL_REPEAT);
+
+
 	//midi
 	/*lp.listPorts();
 	//lp.openPort(1);
@@ -64,6 +70,7 @@ void ofApp::update(){
 void ofApp::draw(){
 	//post.begin();
 	//Circles
+	//textureImage.draw(0,0,100,100);
 	for(int i=0; i<circles.size(); i++) {
 		ofFill();
 		ofSetHexColor(0x90d4e3);
@@ -71,10 +78,9 @@ void ofApp::draw(){
 	}
 	//Boxes
 	for(int i=0; i<boxes.size(); i++) {
-		ofFill();
-		ofSetHexColor(0xe63b8b);
 		boxes[i].get()->draw();
 	}
+	
 	//post.end();
 	//Edges
 	ofNoFill();
@@ -100,11 +106,12 @@ void ofApp::keyPressed(int key){
 	}
 
 	if(key == 'b') {
-		float w = ofRandom(4, 20);	
-		float h = ofRandom(4, 20);	
-		boxes.push_back(ofPtr<ofxBox2dRect>(new ofxBox2dRect));
+		float w = ofRandom(40, 60);	
+		float h = w;
+		boxes.push_back(ofPtr<myBox2dRect>(new myBox2dRect(ofColor(ofRandom(10,20),ofRandom(170,190),ofRandom(50,70)),&textureImage)));
 		boxes.back().get()->setPhysics(3.0, 0.53, 0.1);
 		boxes.back().get()->setup(box2d.getWorld(), mouseX, mouseY, w, h);
+		//boxes.back().get()->printVertices();
 	}
 
 	if (key == 'f')
