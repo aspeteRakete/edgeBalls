@@ -73,7 +73,9 @@ std::vector<Polygon> edgeInterface::parseFromEdge(int screenw, int screenh)
 			double y = points[i]["y"].asDouble();
 			poly.push_back(ofVec2f(x * screenw, y * screenh));
 		}
+		if(!poly.empty()){
 		result.push_back(poly);
+	}
 	}
 
 	return result;
