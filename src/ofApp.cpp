@@ -129,6 +129,14 @@ void ofApp::keyPressed(int key){
 
 	}
 
+	if(key== ' ')
+	{
+		for(int i=0; i<circles.size(); i++) {
+			circles[i].get()->addRepulsionForce(ofVec2f(ofGetMouseX(),ofGetMouseY()),60);
+		}
+		
+	}
+
 }
 void ofApp::processEdges()
 {
@@ -180,6 +188,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
+	
 
 }
 
