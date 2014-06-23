@@ -53,6 +53,7 @@ void ofApp::setup(){
 	lp.openPort("Launchpad 24:0");
 	lp.addListener(this);
 	lp.setVerbose(true);*/
+	debug = false;
 
 }
 
@@ -91,6 +92,17 @@ void ofApp::draw(){
 	{
 		edgesFromEdge[i]->updateShape();
 		edgesFromEdge[i]->draw();
+	}
+
+	// some debug information
+	if(debug){
+		string info = "Debug information";
+		info += "Press c to add some circles\n";
+	    info += "Total Bodies: "+ofToString(box2d.getBodyCount())+"\n";
+		info += "Total Joints: "+ofToString(box2d.getJointCount())+"\n\n";
+		info += "FPS: "+ofToString(ofGetFrameRate())+"\n";
+	    ofSetHexColor(0x444342);
+		ofDrawBitmapString(info, 10, 15);
 	}
 
 }
@@ -135,6 +147,10 @@ void ofApp::keyPressed(int key){
 			circles[i].get()->addRepulsionForce(ofVec2f(ofGetMouseX(),ofGetMouseY()),60);
 		}
 		
+	}
+
+	if(key == 'd'){
+		debug = !debug;
 	}
 
 }

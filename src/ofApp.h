@@ -43,4 +43,6 @@ class ofApp : public ofBaseApp, public ofxMidiListener{
 		ofxPostProcessing post;
 
 		ofxMidiIn lp;
+
+		bool debug;
 };
