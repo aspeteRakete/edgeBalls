@@ -4,10 +4,13 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	
-	ofSetVerticalSync(true);
+	ofSetVerticalSync(false);
 	ofEnableSmoothing();
 	ofBackgroundHex(0x0);
 	ofSetLogLevel(OF_LOG_NOTICE);
+    eCam.setVFlip(true);
+	//ofSetFrameRate(30);
+   // ofEnableDepthTest(); //doesn't work with ofxGui Turn on when needed
 
 	box2d.init();
 	box2d.setGravity(0, 10);
@@ -55,6 +58,13 @@ void ofApp::setup(){
 	lp.setVerbose(true);*/
 	debug = false;
 
+	//meshGen.loadImage("images/kirsch.jpg");
+	meshGen.loadImage("images/jelly01.jpg");
+	meshGen.resizeImage(ofGetWidth(),ofGetHeight());
+	meshGen.generateMesh();
+
+	//GUI
+
 }
 
 //--------------------------------------------------------------
@@ -69,9 +79,19 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	//post.begin();
+	//background
+	ofColor centerColor = ofColor(19,48,46); 
+    ofColor edgeColor(5,10,14);
+    ofBackgroundGradient(centerColor, edgeColor, OF_GRADIENT_CIRCULAR);
+    //background mesh
+    eCam.begin();
+    ofPushMatrix();
+    ofTranslate(-ofGetWidth()/2,-ofGetHeight()/2);
+    meshGen.draw();
+    ofPopMatrix();	
+	eCam.end();
+
 	//Circles
-	//textureImage.draw(0,0,100,100);
 	for(int i=0; i<circles.size(); i++) {
 		ofFill();
 		ofSetHexColor(0x90d4e3);
@@ -103,7 +123,11 @@ void ofApp::draw(){
 		info += "FPS: "+ofToString(ofGetFrameRate())+"\n";
 	    ofSetHexColor(0x444342);
 		ofDrawBitmapString(info, 10, 15);
+		//gui.draw();
+		meshGen.getGuiPanel().draw();
 	}
+
+	
 
 }
 
@@ -177,7 +201,7 @@ void ofApp::processEdges()
 		ofLog() << "edges:" << edgesFromEdge.size();
 }
 
-void ofApp::newMidiMessage(ofxMidiMessage& eventArgs){
+/*void ofApp::newMidiMessage(ofxMidiMessage& eventArgs){
 	ofLog() << "Midi Message Received. velocity:" <<eventArgs.velocity << " - pitch: " << eventArgs.pitch; 
 	float r = ofRandom(4,20);		// a random radius 4px - 20px
 	circles.push_back(ofPtr<myBox2dCircle>(new myBox2dCircle));
@@ -185,7 +209,7 @@ void ofApp::newMidiMessage(ofxMidiMessage& eventArgs){
 	int x = (eventArgs.pitch) * (ofGetWidth() / 120);
 	int y = 10;
 	circles.back().get()->setup(box2d.getWorld(), x, y, r,ofColor(ofRandom(190,210),ofRandom(50,70),ofRandom(0,12)));
-}
+}*/
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){

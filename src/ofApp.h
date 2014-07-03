@@ -6,9 +6,10 @@
 #include "myBox2DCircle.h"
 #include "myBox2dRect.h"
 #include "ofxPostProcessing.h"
-#include "ofxMidi.h"
+#include "meshGenerator.h"
+#include "ofxGui.h"
 
-class ofApp : public ofBaseApp, public ofxMidiListener{
+class ofApp : public ofBaseApp{
 
 	public:
 		void setup();
@@ -24,7 +25,7 @@ class ofApp : public ofBaseApp, public ofxMidiListener{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		void newMidiMessage(ofxMidiMessage& eventArgs);
+		//void newMidiMessage(ofxMidiMessage& eventArgs);
 
 		void processEdges();
 		vector<Polygon> polys;
@@ -42,7 +43,14 @@ class ofApp : public ofBaseApp, public ofxMidiListener{
 
 		ofxPostProcessing post;
 
-		ofxMidiIn lp;
+		//ofxMidiIn lp;
 
 		bool debug;
+
+		meshGenerator meshGen;
+
+		//GUI
+		ofxPanel gui;
+		ofEasyCam eCam;
+        ofShader shader;
 };

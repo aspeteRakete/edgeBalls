@@ -2,9 +2,9 @@
 #include "ofApp.h"
 #include "ofGLProgrammableRenderer.h"
 
-
-#define SCREENWIDTH 1680
-#define SCREENHEIGHT 1050
+//hyundai: 1680 * 1050
+#define SCREENWIDTH 1600
+#define SCREENHEIGHT 900
 //========================================================================
 int main( ){
 	ofSetCurrentRenderer(ofGLProgrammableRenderer::TYPE);
